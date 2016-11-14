@@ -1,0 +1,79 @@
+<html ng-app="taskManagerApp">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>AngularJS Task Manager</title>
+<link href='./css/style.css' rel="stylesheet" type="text/css" />
+<link href='./css/css/font-awesome.css' rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+<script data-require="angular.js@*" data-semver="1.3.0-beta.14" src="http://code.angularjs.org/1.3.0-beta.14/angular.js"></script>
+  <script data-require="angular-animate@*" data-semver="1.3.0-beta.14" src="http://code.angularjs.org/1.3.0-beta.14/angular-animate.js"></script>
+<script type="text/javascript" src="./js/app.js"></script>
+<script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.1/jquery.min.js"
+			src="@{http://cdn.jsdelivr.net/webjars/jquery/2.1.1/jquery.min.js}"></script>
+</head>
+<body>
+
+<div ng-controller="taskManagerController">
+<h2 class="page-title">Monitoring Service</h2>
+	<div id="entry-panel" class="fadein fadeout showpanel panel" ng-show="toggle">
+		<div class="panel-heading">
+			<i class="panel-title-icon fa fa-tasks"></i>
+			<span class="panel-title">Control panel</span>
+			<div class="panel-heading-controls">
+				<button ng-click="toggle = !toggle" class="btn-panel">Update configuration</button>
+				<button class="btn-panel" ng-disabled="monitoringStarted" confirmed-click="startMonitoring()" ng-confirm-click="Would you like to start monitoring?">Start monitoring</button>
+				<button class="btn-panel" ng-disabled="!monitoringStarted" confirmed-click="stopMonitoring()" ng-confirm-click="Would you like to stop monitoring?">Stop monitoring</button>
+
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="entry" ng-repeat="entry in entries">
+				<span ng-if="entry.type=='ERROR'" class="severity severity-red">
+					{{entry.type}}
+				</span>
+				<span ng-if="entry.type=='WARNING'" class="severity severity-yellow">
+					{{entry.type}}
+				</span>
+				<span ng-if="entry.type=='INFO'" class="severity severity-green">
+					{{entry.type}}
+				</span>
+				<div>
+					{{entry.count}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="add-entry-panel" class="fadein fadeout addpanel panel" ng-hide="toggle">
+		<div class="panel-heading">
+			<i class="panel-title-icon fa"></i>
+			<span class="panel-title">Update configuration</span>
+			<div class="panel-heading-controls">
+				<button ng-click="toggle = !toggle" class="btn-panel">Switch to log list</button>
+			</div>
+		</div>
+		<div class="panel-body">
+			<div class="entry" >
+				<table class="update-configuration">
+					<tr>
+						<td>*File path:</td>
+						<td><input type="text" ng-model="filePath"/></td>
+					</tr>
+					<tr>
+						<td>*Monitoring interval:</td>
+						<td>
+							<select ng-model="monitoringInterval" ng-options="interval as interval for interval in monitoringIntervals">
+								<option value="">-- Select --</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td><br/><button ng-click="updateConfiguration()" class="btn-panel-big">Update</button></td>
+					</tr>
+				</table>								
+			</div>
+		</div>
+	</div>
+	<h4 class="page-title">Assignment complete by <a href="">Nikita Biloshytskyi</a></h4>
+</div>
+</body>
+</html>
