@@ -14,12 +14,6 @@ public interface MonitoringFacade {
     MonitoringResponse consumeLogs(MonitoringRequest request);
 
     /**
-     * Configure monitoring service with provided configuration
-     * @param @ConfigurationRequest request
-     */
-    void configure(ConfigurationRequest request);
-
-    /**
      * Start monitoring thread.
      */
     void start();

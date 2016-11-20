@@ -11,7 +11,7 @@ public interface MonitoringService {
      * Consumes logs stacked in service, non conforming records are eliminated
      * @return List<LogEntry> list of entries in log conforming to defined standard.
      */
-    List<LogEntry> consumeLogEntries();
+    List<LogEntry> consumeLogEntries(long monitoringInterval);
 
     /**
      * Start daemon monitoring service with latest configuration.
@@ -22,6 +22,4 @@ public interface MonitoringService {
      * Stop daemon monitoring service.
      */
     void stop();
-
-    MonitoringConfiguration getConfiguration();
 }

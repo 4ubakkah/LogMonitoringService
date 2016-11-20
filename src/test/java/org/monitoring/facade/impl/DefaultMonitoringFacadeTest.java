@@ -27,19 +27,11 @@ public class DefaultMonitoringFacadeTest {
 
     @Test
     public void shouldConsumeLogs() throws Exception {
-        facade.consumeLogs(new MonitoringRequest());
+        MonitoringRequest request = new MonitoringRequest();
+        request.setMonitoringInterval(1L);
+        facade.consumeLogs(request);
 
-        Mockito.verify(service).consumeLogEntries();
-    }
-
-    @Test
-    public void shouldConfigure() throws Exception {
-        ConfigurationRequest configurationRequest = new ConfigurationRequest();
-        configurationRequest.setFilePath("TEST_PATH");
-        configurationRequest.setMonitoringInterval(123);
-        facade.configure(configurationRequest);
-
-        Mockito.verify(configuration).updateConfiguration(configurationRequest.getFilePath(), configurationRequest.getMonitoringInterval());
+        Mockito.verify(service).consumeLogEntries(1L);
     }
 
     @Test

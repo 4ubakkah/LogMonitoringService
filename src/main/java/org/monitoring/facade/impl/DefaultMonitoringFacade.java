@@ -1,7 +1,5 @@
 package org.monitoring.facade.impl;
 
-import org.monitoring.configuration.MonitoringConfiguration;
-import org.monitoring.dto.ConfigurationRequest;
 import org.monitoring.dto.MonitoringRequest;
 import org.monitoring.dto.MonitoringResponse;
 import org.monitoring.facade.MonitoringFacade;
@@ -26,21 +24,11 @@ public class DefaultMonitoringFacade implements MonitoringFacade {
     @Autowired
     private MonitoringService service;
 
-    @Autowired
-    private MonitoringConfiguration configuration;
-
     @RequestMapping(value="/consume", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @Override
     public MonitoringResponse consumeLogs(@RequestBody MonitoringRequest request) {
-        return composeMonitoringResponse(service.consumeLogEntries());
-    }
-
-    @RequestMapping(value="/configure", method= RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    @Override
-    public void configure(@RequestBody ConfigurationRequest request) {
-        service.getConfiguration().updateConfiguration(request.getFilePath(), request.getMonitoringInterval());
+        return composeMonitoringResponse(service.consumeLogEntries(request.getMonitoringInterval()));
     }
 
     @RequestMapping(value="/start", method= RequestMethod.POST)

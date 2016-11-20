@@ -7,6 +7,8 @@ logMonitorModule.controller('logMonitorController', function ($scope,$http) {
 
     $scope.monitoringIntervals=[1000, 10000, 10000000];
 
+    $scope.selectedMonitoringInterval = $scope.monitoringIntervals[0];
+
     $scope.monitoringInterval="";
     $scope.filePath="";
 
@@ -18,13 +20,13 @@ logMonitorModule.controller('logMonitorController', function ($scope,$http) {
     setInterval(function() {
         if($scope.monitoringStarted == true)
             sendConsumeRequest();
-    }, 10000);
+    }, 100);
 
     function sendConsumeRequest() {
         $http({
             url: '/rest/monitoring/consume',
             method: 'POST',
-            data : angular.toJson({}),
+            data : composeConsumeRequest(),
             headers : {
                 'Content-Type' : 'application/json'
             }
@@ -71,22 +73,16 @@ logMonitorModule.controller('logMonitorController', function ($scope,$http) {
         }
     }
 
-
-    function sendUpdateConfigurationRequest() {
-        $http({
-            url : '/rest/monitoring/configure',
-            method: 'POST',
-            data: composeJsonFromUpdateConfigurationRequest(),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            async: false
-        });
-    }
-
     function composeJsonFromUpdateConfigurationRequest() {
         var jsonObject = {};
         jsonObject.monitoringInterval = $scope.monitoringInterval;
         jsonObject.filePath = $scope.filePath;
+        return JSON.stringify(jsonObject);
+    }
+
+    function composeConsumeRequest() {
+        var jsonObject = {};
+        jsonObject.monitoringInterval = $scope.selectedMonitoringInterval;
         return JSON.stringify(jsonObject);
     }
 
@@ -112,12 +108,11 @@ logMonitorModule.controller('logMonitorController', function ($scope,$http) {
     }
 
     $scope.updateConfiguration = function updateConfiguration() {
-        if($scope.monitoringInterval=="" || $scope.filePath=="" || $scope.taskPriority == ""){
-            alert("Inconsistent configuration detected! Please provide values for monitoring interval, file path");
+        if($scope.monitoringInterval==""){
+            alert("Inconsistent configuration detected! Please provide value for monitoring interval");
         }
         else{
-            sendUpdateConfigurationRequest();
-
+            $scope.selectedMonitoringInterval = $scope.monitoringInterval;
             $scope.toggle='!toggle';
             $scope.monitoringInterval="";
             $scope.filePath="";

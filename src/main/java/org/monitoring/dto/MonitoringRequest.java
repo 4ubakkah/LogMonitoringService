@@ -3,6 +3,14 @@ package org.monitoring.dto;
 
 public class MonitoringRequest {
 
-    //TODO Intentionally left, to be extended in future
+    private long monitoringInterval;
+
+    public long getMonitoringInterval() {
+        return monitoringInterval;
+    }
+
+    public void setMonitoringInterval(long monitoringInterval) {
+        this.monitoringInterval = monitoringInterval;
+    }
 
 }
