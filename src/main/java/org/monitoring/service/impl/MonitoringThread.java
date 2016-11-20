@@ -40,10 +40,10 @@ public class MonitoringThread extends Thread{
 
                 String line = br.readLine();
                 if (line == null) {
-                    System.out.println("No updates detected, going to sleep.");
+                    //System.out.println("No updates detected, going to sleep.");
                     Thread.sleep(configuration.getThreadSleepTimeout());
                 } else {
-                    System.out.println("New log record detected: " + line);
+                    //System.out.println("New log record detected: " + line);
                     LogEntry logEntry = LogParser.parseLogEntry(line);
                     if (logEntry != null) {
                         nonConsumedLogsEntries.add(logEntry);

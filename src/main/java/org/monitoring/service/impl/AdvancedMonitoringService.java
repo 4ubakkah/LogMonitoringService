@@ -5,13 +5,17 @@ import org.monitoring.configuration.MonitoringConfiguration;
 import org.monitoring.log.LogEntry;
 import org.monitoring.service.MonitoringService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Scope(scopeName = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AdvancedMonitoringService implements MonitoringService, Observer {
 
     /**
@@ -22,7 +26,7 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
     /**
      * List of LogEntries not consumed by client application injected into monitoring thread.
      */
-    protected final LinkedList<LogEntry> nonConsumedLogsEntries;
+    protected volatile LinkedList<LogEntry> nonConsumedLogsEntries;
 
     protected final MonitoringConfiguration configuration;
 
@@ -34,7 +38,7 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
     }
 
     @Override
-    public List<LogEntry> consumeLogEntries() {
+    public synchronized List<LogEntry> consumeLogEntries() {
         List<LogEntry> entriesToConsume = new ArrayList<>(nonConsumedLogsEntries.size());
 
         while (!nonConsumedLogsEntries.isEmpty()) {
@@ -50,7 +54,7 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
     }
 
     @Override
-    public void start() {
+    public synchronized void start() {
         if(monitoringThread == null || monitoringThread.getState().equals(Thread.State.TERMINATED)) {
             monitoringThread = new MonitoringThread(configuration, nonConsumedLogsEntries);
             monitoringThread.setDaemon(true);
@@ -59,7 +63,7 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
     }
 
     @Override
-    public void stop() {
+    public synchronized void stop() {
         if(monitoringThread == null) {
             return;
         }
@@ -77,7 +81,7 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
      * Called on monitoring configuration update to restart monitoring procedure with updated configuration.
      */
     @Override
-    public void update(Observable o, Object arg) {
+    public synchronized void update(Observable o, Object arg) {
         if (o instanceof MonitoringConfiguration) {
             System.out.println("Logging file path has changed, restarting service.");
 

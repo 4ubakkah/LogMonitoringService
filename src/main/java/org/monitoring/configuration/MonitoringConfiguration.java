@@ -1,12 +1,14 @@
 package org.monitoring.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.Observable;
 
 @Component
 @ConfigurationProperties(prefix="monitoring", ignoreUnknownFields = false)
+@Scope(scopeName = "prototype")
 public class MonitoringConfiguration extends Observable {
 
     private String filePath;

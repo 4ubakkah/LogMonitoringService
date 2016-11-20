@@ -1,9 +1,9 @@
-var taskManagerModule = angular.module('taskManagerApp', ['ngAnimate']);
+var logMonitorModule = angular.module('logMonitorApp', ['ngAnimate']);
 
-taskManagerModule.controller('taskManagerController', function ($scope,$http) {
+logMonitorModule.controller('logMonitorController', function ($scope,$http) {
 
-	$scope.toggle=true;
-	$scope.severities=['INFO', 'WARNING', 'ERROR',];
+    $scope.toggle=true;
+    $scope.severities=['INFO', 'WARNING', 'ERROR'];
 
     $scope.monitoringIntervals=[1000, 10000, 10000000];
 
@@ -17,34 +17,34 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 
     setInterval(function() {
         if($scope.monitoringStarted == true)
-            sendAjaxConsumeRequest();
-    }, 5000);
+            sendConsumeRequest();
+    }, 10000);
 
-    function sendAjaxConsumeRequest() {
-        var consumeRequest = JSON.stringify({});
-        $.ajax({
+    function sendConsumeRequest() {
+        $http({
             url: '/rest/monitoring/consume',
-            type: 'post',
-            data: consumeRequest,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            async: false,
-            success: function (consumeResponse) {
-                parseConsumeResponse(consumeResponse);
-                fillLackingSeverities();
-                $scope.$apply();
+            method: 'POST',
+            data : angular.toJson({}),
+            headers : {
+                'Content-Type' : 'application/json'
             }
+        }).then(function successCallback(response) {
+            parseConsumeResponse(response);
+            fillLackingSeverities();
+        }, function errorCallback(response) {
+            console.log(response.statusText);
         });
     }
+
 
     function parseConsumeResponse(consumeResponse) {
         $scope.entries = [];
 
-        if (Object.keys(consumeResponse.statistics).length != 0) {
-            for (var key in consumeResponse.statistics) {
+        if (consumeResponse.data.statistics != null) {
+            for (var key in consumeResponse.data.statistics) {
                 var entry = {};
                 entry.type = key;
-                entry.count = consumeResponse.statistics[key];
+                entry.count = consumeResponse.data.statistics[key];
                 $scope.entries.push(entry);
             }
         }
@@ -72,14 +72,14 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
     }
 
 
-    function sendAjaxUpdateConfigurationRequest() {
-        $.ajax({
+    function sendUpdateConfigurationRequest() {
+        $http({
             url : '/rest/monitoring/configure',
-            type : 'post',
-            data :  composeJsonFromUpdateConfigurationRequest(),
+            method: 'POST',
+            data: composeJsonFromUpdateConfigurationRequest(),
             contentType: 'application/json; charset=utf-8',
-            dataType : 'json',
-            async : false
+            dataType: 'json',
+            async: false
         });
     }
 
@@ -90,24 +90,24 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
         return JSON.stringify(jsonObject);
     }
 
-    function sendAjaxStartMonitoringService() {
-        $.ajax({
+    function sendStartMonitoringService() {
+        $http({
             url : '/rest/monitoring/start',
-            type : 'post',
+            method: 'POST',
+            data: composeJsonFromUpdateConfigurationRequest(),
             contentType: 'application/json; charset=utf-8',
-            dataType : 'json',
-            data :  composeJsonFromUpdateConfigurationRequest(),
-            async : false
+            dataType: 'json',
+            async: false
         });
     }
 
-    function sendAjaxStopMonitoringService() {
-        $.ajax({
+    function sendStopMonitoringService() {
+        $http({
             url : '/rest/monitoring/stop',
-            type : 'post',
+            method: 'POST',
             contentType: 'application/json; charset=utf-8',
-            dataType : 'json',
-            async : false
+            dataType: 'json',
+            async: false
         });
     }
 
@@ -116,7 +116,7 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
             alert("Inconsistent configuration detected! Please provide values for monitoring interval, file path, priority");
         }
         else{
-            sendAjaxUpdateConfigurationRequest();
+            sendUpdateConfigurationRequest();
 
             $scope.toggle='!toggle';
             $scope.monitoringInterval="";
@@ -125,31 +125,28 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
     };
 
     $scope.startMonitoring = function startMonitoring() {
-        sendAjaxStartMonitoringService();
+        sendStartMonitoringService();
         $scope.monitoringStarted = true;
-        $scope.$apply();
     };
 
     $scope.stopMonitoring = function stopMonitoring() {
-        sendAjaxStopMonitoringService();
+        sendStopMonitoringService();
         $scope.monitoringStarted = false;
-        $scope.$apply();
     };
-	
+
 });
 
-//Angularjs Directive for confirm dialog box
-taskManagerModule.directive('ngConfirmClick', [
-	function(){
-         return {
-             link: function (scope, element, attr) {
-                 var msg = attr.ngConfirmClick || "Are you sure?";
-                 var clickAction = attr.confirmedClick;
-                 element.bind('click',function (event) {
-                     if ( window.confirm(msg) ) {
-                         scope.$eval(clickAction);
-                     }
-                 });
-             }
-         };
- }]);
+logMonitorModule.directive('ngConfirmClick', [
+    function(){
+        return {
+            link: function (scope, element, attr) {
+                var msg = attr.ngConfirmClick || "Are you sure?";
+                var clickAction = attr.confirmedClick;
+                element.bind('click',function (event) {
+                    if ( window.confirm(msg) ) {
+                        scope.$eval(clickAction);
+                    }
+                });
+            }
+        };
+    }]);
