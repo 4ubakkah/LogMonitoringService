@@ -65,16 +65,6 @@ public class MonitoringFacadeITest {
     }
 
     @Test
-    public void configure() throws Exception {
-        ConfigurationRequest configurationRequest = new ConfigurationRequest();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/rest/monitoring/configure")
-                .content(this.convertToJson(configurationRequest))
-                .contentType(jsonContentType))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
     public void start() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/rest/monitoring/start")
                 .contentType(jsonContentType))
