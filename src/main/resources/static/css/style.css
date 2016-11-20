@@ -1,56 +1,59 @@
 @font-face{
-    font-family:FontAwesome;
-    src:url(fonts/fontawesome-webfont.eot?#iefix) format('eot'),
+	font-family:FontAwesome;
+	src:url(fonts/fontawesome-webfont.eot?#iefix) format('eot'),
 	url(fonts/fontawesome-webfont.woff) format('woff'),
 	url(fonts/fontawesome-webfont.ttf) format('truetype'),
 	url(fonts/fontawesome-webfont.svg#FontAwesome) format('svg');
-    font-weight:400;font-style:normal;}
-    
+	font-weight:400;font-style:normal;}
+
 body
 {
-	width:50%;
+	width:100%;
+	min-width:500px;
 	margin-left:auto;
 	margin-right:auto;
 	font-family: 'Open Sans', sans-serif;
 	font-size:13px;
+	height:inherit;
+	background-color:azure
+
 }
 
 .showpanel
 {
 	width:50%;
+	min-width:500px;
 	margin-right:25%;
 	margin-left:25%;
 	border-color: #e2e2e2;
 	border-radius: 2px;
-	
+
 }
 
 .showpanel .panel-heading
 {
 	background: #39393d;
 	color: #fff;
-	padding: 10px 15px;	
+	padding: 5px 10px;
 }
-.addpanel
+.add-entry-panel
 {
-	width:50%;
 	margin-right:25%;
 	margin-left:25%;
 	background-color:#39393d;
-	border-radius: 2px;
 }
 
-.addpanel .panel-heading
+.add-entry-panel .panel-heading
 {
 	background: #39393d;
 	color: #fff;
-	padding: 10px 15px;	
+	padding: 5px 10px;
 }
 
 .panel-title
 {
 	font-size: 14px;
-        line-height: 20px;
+	line-height: 20px;
 }
 .panel-heading-controls
 {
@@ -114,32 +117,22 @@ body
 	padding-right: 20px;
 	margin: 0 -20px;
 }
-.entry:before
-{
-	content: " ";
-	display: table;
-}
-.update-configuration
-{
-	width: 80%;
-	margin-left: 10%;
-	margin-right: 10%;
-}
+
+
+
 .severity
 {
 	right: 20px;
 	display: block;
 	position: relative;
-	margin: 0;
 	font-size: 11px;
 	line-height: 20px;
-	text-shadow: 0 -1px 0 rgba(0,0,0,.2);
 	padding: 0 6px;
 	float: right!important;
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: baseline;
-	border-radius: .25em;
+	width: 30%;
 }
 .severity-red
 {
@@ -159,11 +152,16 @@ body
 
 .entry
 {
-	position: relative;
-	background: beige;
-	margin: 0 -20px;
-	padding-left: 20px;
-	padding-right: 20px;
+	width:50%;
+	background:#dad8c9;
+	margin: 0 0 10 25%;
+}
+
+.entry-record
+{
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
 }
 
 .task-title
@@ -182,53 +180,27 @@ body
 	content: " ";
 	display: table;
 }
-.action-status
-{
-	color:orangered;
-	padding-left:20px;
-	cursor:context-menu;
-	
-}
 
 .fadein,
 .fadeout {
-  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
-  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
-  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+	-webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+	-moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+	-o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
+	transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 1s;
 }
 
 .fadein.ng-hide-remove,
 .fadeout.ng-hide-add.ng-hide-add-active {
-  opacity: 0;
-  display: block !important;
-  height:0px;
+	opacity: 0;
+	display: block !important;
+	height:0px;
 }
 
 .fadeout.ng-hide-add,
 .fadein.ng-hide-remove.ng-hide-remove-active {
-  opacity: 1;
-  display: block !important;
-  height:0px;
-}
-
-.button-red {
-	background-color: crimson;
-	background-image: -webkit-linear-gradient(top, crimson, crimson);
-	background-image: -moz-linear-gradient(top,crimson,crimson);
-	color: white;
-	box-shadow: 0 0 5px crimson inset, 0 1px 1px crimson;
-	border: 0px;
-	display: inline-block;
-	font-size: 14px;
-	color: white;
-	text-decoration: none !important;
-	padding: 3px 10px;
-	line-height: inherit;
-	overflow: hidden;
-	position: relative;
-	border-radius: 4px;
-	margin-bottom: 20px;
+	opacity: 1;
+	display: block !important;
+	height:0px;
 }
 
 .page-title
@@ -236,8 +208,50 @@ body
 	font-family:'Trebuchet MS', Helvetica, sans-serif;
 	color:steelblue;
 	text-align:center;
-	width:50%;
+	min-width:500px;
+	margin-right:25%;
 	margin-left:25%;
-	margin-right:25%
 }
 
+.update-configuration
+{
+	padding: 10% 10%;
+}
+
+.form{
+	background:beige;
+	padding:20px;
+}
+
+.form ul{
+	list-style:none;
+	padding:0;
+	margin:0;
+}
+
+.form li{
+	display: block;
+	padding: 9px;
+	border:1px solid #2b2222;
+	margin-bottom: 30px;
+	border-radius: 3px;
+}
+.form li:last-child{
+	border:none;
+	margin-bottom: 0px;
+}
+
+.form li > label{
+	float: left;
+	margin-top: -19px;
+	background:beige;
+	height: 14px;
+	font-size: 14px;
+}
+
+.form input[type="text"],
+.form select
+{
+	width: 100%;
+	border: none;
+}

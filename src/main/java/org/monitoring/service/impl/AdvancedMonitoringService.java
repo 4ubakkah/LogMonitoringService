@@ -30,6 +30,11 @@ public class AdvancedMonitoringService implements MonitoringService, Observer {
 
     protected final MonitoringConfiguration configuration;
 
+    @Override
+    public MonitoringConfiguration getConfiguration() {
+        return configuration;
+    }
+
     @Autowired
     public AdvancedMonitoringService(MonitoringConfiguration configuration) {
         nonConsumedLogsEntries = new LinkedList<>();

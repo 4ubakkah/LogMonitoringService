@@ -113,7 +113,7 @@ logMonitorModule.controller('logMonitorController', function ($scope,$http) {
 
     $scope.updateConfiguration = function updateConfiguration() {
         if($scope.monitoringInterval=="" || $scope.filePath=="" || $scope.taskPriority == ""){
-            alert("Inconsistent configuration detected! Please provide values for monitoring interval, file path, priority");
+            alert("Inconsistent configuration detected! Please provide values for monitoring interval, file path");
         }
         else{
             sendUpdateConfigurationRequest();

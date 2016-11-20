@@ -28,22 +28,22 @@
 		</div>
 		<div class="panel-body">
 			<div class="entry" ng-repeat="entry in entries">
-				<span ng-if="entry.type=='ERROR'" class="severity severity-red">
+				<span ng-if="entry.type=='ERROR'" class="severity severity-red ">
 					{{entry.type}}
-				</span>
-				<span ng-if="entry.type=='WARNING'" class="severity severity-yellow">
+                    </span>
+				<span ng-if="entry.type=='WARNING'" class="severity severity-yellow entry-record">
 					{{entry.type}}
-				</span>
-				<span ng-if="entry.type=='INFO'" class="severity severity-green">
+                </span>
+				<span ng-if="entry.type=='INFO'" class="severity severity-green entry-record">
 					{{entry.type}}
-				</span>
-				<div>
+                </span>
+				<div class="entry-record">
 					{{entry.count}}
-				</div>
+                </div>
 			</div>
 		</div>
 	</div>
-	<div id="add-entry-panel" class="fadein fadeout addpanel panel" ng-hide="toggle">
+	<div id="add-entry-panel" class="fadein fadeout showpanel panel" ng-hide="toggle">
 		<div class="panel-heading">
 			<i class="panel-title-icon fa"></i>
 			<span class="panel-title">Update configuration</span>
@@ -53,27 +53,29 @@
 		</div>
 		<div class="panel-body">
 			<div class="entry" >
-				<table class="update-configuration">
-					<tr>
-						<td>*File path:</td>
-						<td><input type="text" ng-model="filePath"/></td>
-					</tr>
-					<tr>
-						<td>*Monitoring interval:</td>
-						<td>
-							<select ng-model="monitoringInterval" ng-options="interval as interval for interval in monitoringIntervals">
-								<option value="">-- Select --</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td><br/><button ng-click="updateConfiguration()" class="btn-panel-big">Update</button></td>
-					</tr>
-				</table>								
+                <div class="update-configuration">
+                    <form class="form">
+                        <ul>
+                            <li>
+                                <label>File path</label>
+                                <input type="text" ng-model="filePath"/>
+                            </li>
+                            <li>
+                                <label>Interval</label>
+                                <select ng-model="monitoringInterval" ng-options="interval as interval for interval in monitoringIntervals">
+                                    <option value="">-- Select --</option>
+                                </select>
+                            </li>
+                            <li>
+                                <button ng-click="updateConfiguration()" class="btn-panel-big">Update</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
 			</div>
 		</div>
 	</div>
 	<h4 class="page-title">Assignment complete by <a href="">Nikita Biloshytskyi</a></h4>
-</div>
+</span>
 </body>
 </html>

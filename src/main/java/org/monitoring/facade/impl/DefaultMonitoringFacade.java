@@ -40,7 +40,7 @@ public class DefaultMonitoringFacade implements MonitoringFacade {
     @ResponseBody
     @Override
     public void configure(@RequestBody ConfigurationRequest request) {
-        configuration.updateConfiguration(request.getFilePath(), request.getMonitoringInterval());
+        service.getConfiguration().updateConfiguration(request.getFilePath(), request.getMonitoringInterval());
     }
 
     @RequestMapping(value="/start", method= RequestMethod.POST)

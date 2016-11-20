@@ -1,5 +1,6 @@
 package org.monitoring.service;
 
+import org.monitoring.configuration.MonitoringConfiguration;
 import org.monitoring.log.LogEntry;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface MonitoringService {
      */
     void stop();
 
+    MonitoringConfiguration getConfiguration();
 }
